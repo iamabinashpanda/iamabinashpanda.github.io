@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+    <link rel="stylesheet" href="style.css">
+    <!--Boxicons CDN-->
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
+</head>
+
+<body>
+    <div class="lock">
+        Please go back to potrait mode for better exprience.
+    </div>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <i class='bx bxs-user-account'></i>
+                <div class="logo_name">Er. Abinash Panda</div>
+            </div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav_list">
+            <li>
+                <a href="#">
+                    <i class='bx bx-search' ></i>
+                    <input type="text" placeholder="Search...">
+                    <!--<span class="links_name">Dashboard</span>-->
+                </a>
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="#about">
+                    <i class='bx bx-user' ></i>
+                    <span class="links_name">About</span>
+                </a>
+                <span class="tooltip">About</span>
+            </li>
+            <li>
+                <a href="#acedamics">
+                    <i class='bx bx-grid-alt' ></i>
+                    <span class="links_name">Acedamics</span>
+                </a>
+                <span class="tooltip">Acedamics</span>
+            </li>
+            <li>
+                <a href="#certifications">
+                    <i class='bx bxs-bookmarks'></i>
+                    <span class="links_name">Certifications</span>
+                </a>
+                <span class="tooltip">Certifications</span>
+            </li>
+            <li>
+                <a href="#projects">
+                    <i class='bx bxl-product-hunt' ></i>
+                    <span class="links_name">Projects</span>
+                </a>
+                <span class="tooltip">Projects</span>
+            </li>
+            <li>
+                <a href="#company">
+                    <i class='bx bxs-school' ></i>
+                    <span class="links_name">Company</span>
+                </a>
+                <span class="tooltip">Company</span>
+            </li>
+            <li>
+                <a href="#skills">
+                    <i class='bx bxs-slideshow'></i>
+                    <span class="links_name">Skills</span>
+                </a>
+                <span class="tooltip">Skills</span>
+            </li>
+            <li>
+                <a href="#places">
+                    <i class='bx bxs-cable-car'></i>
+                    <span class="links_name">Places</span>
+                </a>
+                <span class="tooltip">Places</span>
+            </li>
+            <li>
+                <a href="#contact">
+                    <i class='bx bxs-contact'></i>
+                    <span class="links_name">Contact</span>
+                </a>
+                <span class="tooltip">Contact</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <img src="profile.jpg" alt="profile">
+                    <div class="name_job">
+                        <div class="name">Associate Analyst</div>
+                        <div class="job">Qalibre Software Solutions Pvt. Ltd.</div>
+                    </div>
+                </div>
+                <i class="bx bx-log-out" id="log_out"></i>
+            </div>
+        </div>
+    </div>
+    <div class="home_content">
+        <div class="text" id="about">Abinash Panda</div>
+    </div>
+    <script type="text/javascript">
+        let btn = document.querySelector('#btn');
+        let sidebar = document.querySelector(".sidebar");
+        let search = document.querySelector(".bx-search");
+
+        btn.onclick = function() {
+            sidebar.classList.toggle('active');
+        }
+        search.onclick = function() {
+            sidebar.classList.toggle('active');
+        }
+        screen.orientation.lock('Portrait');
+    </script>
+</body>
+</html>
