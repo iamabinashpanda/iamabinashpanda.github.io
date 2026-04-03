@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abinash Panda | AI Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap');
+
+        :root {
+            --primary: #22d3ee;
+            --secondary: #a855f7;
+            --bg: #030303;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        body.light-theme {
+            --bg: #f8fafc;
+            --text: #0f172a;
+            --glass: rgba(0, 0, 0, 0.03);
+            --border: rgba(0, 0, 0, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Floating Vertical Nav */
+        .side-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 1.5rem 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--border);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-dot:hover {
+            background: var(--primary);
+            transform: scale(1.4);
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            height: 30px;
+            border-radius: 10px;
+        }
+
+        /* --- Shared 3D Flip Mechanics --- */
+        .flip-card {
+            perspective: 1500px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        /* Common Flip Action */
+        .flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* This handles BOTH project and journey cards now */
+        .flip-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .card-face {
+            position: absolute;
+            backface-visibility: hidden;
+            /* This hides the back when showing the front */
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(145deg, rgba(163, 230, 53, 0.05), rgba(251, 191, 36, 0.05));
+        }
+
+        /* --- Unique Styles (Differences) --- */
+
+        /* Project specific height and padding */
+        .project-card {
+            height: 380px;
+        }
+
+        .project-card .card-face {
+            padding: 2rem;
+        }
+
+        /* Journey specific height and padding */
+        .journey-card {
+            height: 240px;
+        }
+
+        .journey-card .card-face {
+            padding: 1.5rem;
+        }
+
+        /* Timeline Axis */
+        .timeline-axis {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
+        }
+
+        .timeline-node {
+            position: absolute;
+            left: -6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        /* Progress Bar */
+        .bar-bg {
+            height: 6px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0;
+            transition: width 1.5s ease;
+        }
+
+        /* Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 100px 0;
+            min-height: auto;
+        }
+
+        /* Hobby Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 1rem;
+        }
+
+        .modal-active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Tags */
+        .tag {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-job {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .tag-edu {
+            background: rgba(163, 230, 53, 0.1);
+            color: #a3e635;
+        }
+
+        .gallery-item {
+            min-width: 300px;
+            max-width: 450px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-[100] p-6">
+        <div
+            class="max-w-7xl mx-auto rounded-full flex justify-between items-center px-8 py-3 border border-white/5 bg-black/20 backdrop-blur-md">
+            <div class="text-xl font-bold tracking-tighter text-gradient">@ iamabinashpanda</div>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-widest opacity-60">
+                <a href="#home" class="hover:text-primary transition-colors">Home</a>
+                <a href="#about" class="hover:text-primary transition-colors">About</a>
+                <a href="#projects" class="hover:text-primary transition-colors">Projects</a>
+                <a href="#services" class="hover:text-primary transition-colors">Services</a>
+                <a href="#interests" class="hover:text-primary transition-colors">Interests</a>
+                <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+            </div>
+            <button onclick="toggleTheme()"
+                class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center">
+                <i id="theme-icon" class="fas fa-moon text-primary"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Side Navigation -->
+    <nav class="side-nav hidden lg:flex">
+        <a href="#home" class="nav-dot active" title="Home"></a>
+        <a href="#about" class="nav-dot" title="About"></a>
+        <a href="#projects" class="nav-dot" title="Projects"></a>
+        <a href="#services" class="nav-dot" title="Services"></a>
+        <a href="#interests" class="nav-dot" title="Lifestyle"></a>
+        <a href="#contact" class="nav-dot" title="Contact"></a>
+    </nav>
+
+    <!-- Main -->
+    <main class="pt-16">
+        <!-- HOME SECTION -->
+        <section id="home" class="px-6">
+            <div class="max-w-6xl mx-auto">
+                <!-- Hero -->
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-12 mb-32 pt-20">
+                    <div class="lg:w-1/2 space-y-6">
+                        <h1 class="text-6xl lg:text-8xl font-extrabold font-heading leading-tight">
+                            Hello, <br>I'm <br><span class="text-gradient">Abinash Panda</span>
+                        </h1>
+                        <p class="text-xl opacity-60 max-w-md">Data & AI Enthusiast specializing in End-to-End
+                            deployments and technical architecture.</p>
+                        <div class="flex flex-wrap gap-6 mt-8">
+                            <a href="https://linkedin.com/in/iamabinashpanda" target="_blank"
+                                class="text-white/50 hover:text-[#0077b5] transition-all duration-300 text-2xl">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://github.com/iamabinashpanda" target="_blank"
+                                class="text-white/50 hover:text-white transition-all duration-300 text-2xl">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://instagram.com/iamabinashpanda" target="_blank"
+                                class="text-white/50 hover:text-[#e4405f] transition-all duration-300 text-2xl">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://youtube.com/yourchannel" target="_blank"
+                                class="text-white/50 hover:text-[#ff0000] transition-all duration-300 text-2xl">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+
+                            <a href="https://hackerrank.com/iamabinashpanda" target="_blank"
+                                class="text-white/50 hover:text-[#2ec866] transition-all duration-300 text-2xl">
+                                <i class="fab fa-hackerrank"></i>
+                            </a>
+                            <a href="https://leetcode.com/iamabinashpanda" target="_blank"
+                                class="text-white/50 hover:text-[#ffa116] transition-all duration-300 text-2xl">
+                                <i class="fas fa-code"></i> </a>
+                            <a href="https://kaggle.com/iamabinashpanda" target="_blank"
+                                class="text-white/50 hover:text-[#20beff] transition-all duration-300 text-2xl">
+                                <i class="fab fa-kaggle"></i>
+                            </a>
+                        </div>
+                        <a href="#contact"
+                            class="inline-block px-10 py-4 bg-gradient-to-b
+                             from-lime-400 to-amber-400 text-black font-bold rounded-2xl hover:scale-105 transition-transform">Open to Work - Let's Talk</a>
+                    </div>
+                    <div class="lg:w-1/2 relative">
+                        <div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full"></div>
+                        <img src="assets\img\profile.png"
+                            class="relative z-10 w-full h-[500px] object-cover rounded-[40px] border border-white/10 shadow-2xl"
+                            alt="Abinash">
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="px-6 reveal mb-32">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-5xl font-heading font-bold mb-10 text-center uppercase tracking-tighter">
+            About <span class="text-gradient">Me</span>
+        </h2>
+        
+        <div class="bg-white/5 p-10 md:p-14 rounded-[40px] border border-white/5 text-lg md:text-xl leading-relaxed text-center shadow-2xl backdrop-blur-sm">
+            
+            <p class="mb-6 opacity-90 font-medium text-white">
+                "Build for today, but architect for tomorrow."
+            </p>
+
+            <p class="mb-6 opacity-60">
+                I am a <strong class="text-white opacity-100">Software Engineer</strong> and <strong class="text-white opacity-100">Data Enthusiast</strong> with nearly 3 years of enterprise experience at <span class="text-blue-400">Qalibre</span>. My journey began in the complex world of <strong class="text-white opacity-100">P&C Insurance technology</strong>, where I mastered Duck Creek and OneShield ecosystems to deliver scalable policy solutions for global markets including Canada, USA, and Japan.
+            </p>
+
+            <p class="mb-6 opacity-60">
+                Currently, I am pivoting into the frontier of <strong class="text-white opacity-100">Artificial Intelligence and MLOps</strong>. I am deep-diving into <span class="text-emerald-400">Generative AI, RAG pipelines, and Cloud Architecture</span>. My goal is to merge my enterprise software foundations with modern AI to create robust, production-ready systems that scale seamlessly.
+            </p>
+
+            <p class="opacity-60">
+                Beyond the code, I am a traveler and culture seeker. I believe that understanding the world makes me a better engineer, bringing <strong class="text-white opacity-100">empathy and fresh perspectives</strong> to every technical challenge I take on.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+        <!-- SERVICES SECTION -->
+        <section id="services" class="px-6 reveal">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-5xl font-heading font-bold mb-20 text-center uppercase tracking-tighter">Technical <span
+                        class="text-gradient">Services</span></h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div
+                        class="bg-white/5 p-12 rounded-[40px] text-center border border-white/10 group hover:bg-emerald-500/5 transition-all">
+                        <i
+                            class="fas fa-server text-4xl text-emerald-400 mb-8 group-hover:scale-110 transition-transform"></i>
+                        <h4 class="text-xl font-bold mb-4">Software Development</h4>
+                        <p class="text-sm opacity-40">Automated model lifecycles and CI/CD for AI.</p>
+                    </div>
+                    <div
+                        class="bg-white/5 p-12 rounded-[40px] text-center border border-white/10 group hover:bg-emerald-500/5 transition-all">
+                        <i
+                            class="fas fa-microchip text-4xl text-emerald-400 mb-8 group-hover:scale-110 transition-transform"></i>
+                        <h4 class="text-xl font-bold mb-4">Data and AI</h4>
+                        <p class="text-sm opacity-40">Designing scalable and efficient neural systems.</p>
+                    </div>
+                    <div
+                        class="bg-white/5 p-12 rounded-[40px] text-center border border-white/10 group hover:bg-emerald-500/5 transition-all">
+                        <i
+                            class="fas fa-cloud text-4xl text-emerald-400 mb-8 group-hover:scale-110 transition-transform"></i>
+                        <h4 class="text-xl font-bold mb-4">Cloud and DevOps</h4>
+                        <p class="text-sm opacity-40">Containerized solutions using AWS & Azure.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journey Section -->
+            <div class="py-20 relative">
+                <h2 class="text-center text-5xl font-heading font-bold mb-32 uppercase tracking-tighter">THE <span
+                        class="text-gradient">JOURNEY</span></h2>
+
+                <div class="max-w-4xl mx-auto pl-12 relative">
+                    <div class="timeline-axis"></div>
+
+                    <!-- Card 3: Job -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px; background: #f59e0b;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold text-amber-400 uppercase tracking-widest text-right">
+                            Ongoing
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face border-amber-500/20">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold leading-tight">AWS & MLOps</h3>
+                                            <p class="text-amber-400 text-xs font-bold uppercase tracking-tight">
+                                                Solution Architect</p>
+                                        </div>
+                                        <i class="fab fa-aws text-2xl opacity-30 text-amber-400"></i>
+                                    </div>
+                                    <div class="bar-bg bg-amber-500/10">
+                                        <div class="bar-fill bg-amber-500" style="width: 40%;"></div>
+                                    </div>
+                                    <p class="mt-4 text-xs opacity-50">Preparing for AWS Developer & Solution Architect
+                                        Certifications.</p>
+                                </div>
+                                <div class="card-face card-back flex flex-col justify-between border-amber-500/20">
+                                    <div class="flex justify-between">
+                                        <span class="tag bg-amber-500/10 text-amber-400">DevOps</span>
+                                        <span class="tag bg-white/5 text-white/50">MLOps</span>
+                                    </div>
+                                    <p class="text-[10px] leading-relaxed opacity-80">
+                                        <strong>Focus:</strong> Deployment pipelines, Cloud Architecture, and scaling ML
+                                        models on AWS infrastructure.
+                                    </p>
+                                    <div class="text-[9px] font-bold text-amber-400 uppercase">Certification Prep</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Job -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px; background: #8b5cf6;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold text-purple-400 uppercase tracking-widest text-right">
+                            Ongoing
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face border-purple-500/20">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold leading-tight">GenAI & RAG</h3>
+                                            <p class="text-purple-400 text-xs font-bold uppercase tracking-tight">
+                                                Advanced LLMs</p>
+                                        </div>
+                                        <i class="fas fa-robot text-2xl opacity-30 text-purple-400"></i>
+                                    </div>
+                                    <div class="bar-bg bg-purple-500/10">
+                                        <div class="bar-fill bg-purple-500" style="width: 60%;"></div>
+                                    </div>
+                                    <p class="mt-4 text-xs opacity-50">Mastering Prompt Engineering, RAG Pipelines, and
+                                        Vector Databases.</p>
+                                </div>
+                                <div class="card-face card-back flex flex-col justify-between border-purple-500/20">
+                                    <div class="flex justify-between">
+                                        <span class="tag bg-purple-500/10 text-purple-400">Generative AI</span>
+                                        <span class="tag bg-white/5 text-white/50">LangChain</span>
+                                    </div>
+                                    <p class="text-[10px] leading-relaxed opacity-80">
+                                        <strong>Stack:</strong> HuggingFace, LangChain, VectorDBs, and Context
+                                        Engineering for Scalable LLM Apps.
+                                    </p>
+                                    <div class="text-[9px] font-bold text-purple-400 uppercase">Architecture Phase</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Job -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px; background: #10b981;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold text-emerald-400 uppercase tracking-widest text-right">
+                            Ongoing
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face learning-active">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold leading-tight">DS, ML & NLP</h3>
+                                            <p class="text-emerald-400 text-xs font-bold uppercase tracking-tight">
+                                                Edureka Training</p>
+                                        </div>
+                                        <i class="fas fa-brain text-2xl opacity-30 text-emerald-400"></i>
+                                    </div>
+                                    <div class="bar-bg bg-emerald-500/10">
+                                        <div class="bar-fill bg-emerald-500" style="width: 75%;"></div>
+                                    </div>
+                                    <p class="mt-4 text-xs opacity-50">Deep diving into Machine Learning, Deep Learning,
+                                        and Natural Language Processing.</p>
+                                </div>
+                                <div class="card-face card-back flex flex-col justify-between">
+                                    <div class="flex justify-between">
+                                        <span class="tag bg-emerald-500/10 text-emerald-400">Learning</span>
+                                        <span class="tag bg-white/5 text-white/50">Core AI</span>
+                                    </div>
+                                    <p class="text-[10px] leading-relaxed opacity-80">
+                                        <strong>Focus:</strong> Supervised/Unsupervised Learning, Neural Networks, and
+                                        Text Processing architectures.
+                                    </p>
+                                    <div class="text-[9px] font-bold text-emerald-400 uppercase">Live Projects in
+                                        Progress</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Card 3: Job -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest text-right">
+                            2022 - 2024
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face border-blue-500/20">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold leading-tight">Analyst - Software Development
+                                            </h3>
+                                            <p class="text-blue-400 text-xs font-bold uppercase tracking-tight">Qalibre
+                                                Software Solutions
+                                            </p>
+                                        </div>
+                                        <i class="fas fa-briefcase text-2xl opacity-30 text-blue-400"></i>
+                                    </div>
+
+                                    <div class="bar-bg bg-blue-500/10">
+                                        <div class="bar-fill bg-blue-500" data-width="100%"></div>
+                                    </div>
+
+                                    <p class="mt-4 text-xs opacity-50 italic">
+                                        Promoted from Associate Analyst to Consultant in the P&C Insurance domain.
+                                    </p>
+                                </div>
+
+                                <div class="card-face card-back flex flex-col justify-between border-blue-500/20">
+                                    <div class="flex justify-between">
+                                        <span class="tag bg-blue-500/10 text-blue-400">P&C Insurance</span>
+                                        <span class="tag bg-white/5 text-white/50">2 yrs 10 mos</span>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <p class="text-[10px] leading-relaxed opacity-80">
+                                            <strong>Duck Creek & OneShield Expert:</strong> Developed scalable policy
+                                            solutions, XML
+                                            configurations, and internal accelerators using .NET Core.
+                                        </p>
+                                        <p class="text-[9px] opacity-60">
+                                            <strong>Tech:</strong> Duck Creek 7.x, ASP.NET Core, XML/XSLT, Azure Blob,
+                                            SQL, Postman.
+                                        </p>
+                                    </div>
+
+                                    <div class="flex justify-between items-center border-t border-white/5 pt-2">
+                                        <span
+                                            class="text-[9px] font-bold text-blue-400 tracking-widest uppercase">Bhubaneswar,
+                                            India</span>
+                                        <span class="text-[9px] opacity-40 uppercase">Full-Time</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: IT Training -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                            Sep 2020
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face border-amber-500/20">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold leading-tight">PHP Development</h3>
+                                            <p class="text-amber-400 text-xs font-bold uppercase tracking-tight">Ducat
+                                                India</p>
+                                        </div>
+                                        <i class="fas fa-certificate text-2xl opacity-30 text-amber-400"></i>
+                                    </div>
+
+                                    <div class="bar-bg bg-amber-500/10">
+                                        <div class="bar-fill bg-amber-400" data-width="100%"></div>
+                                    </div>
+
+                                    <p class="mt-4 text-xs opacity-50">
+                                        Full-stack PHP training completed during the 2021 pandemic.
+                                    </p>
+                                </div>
+
+                                <div class="card-face card-back flex flex-col justify-between border-amber-500/20">
+                                    <div class="flex justify-between">
+                                        <span class="tag bg-amber-500/10 text-amber-400">Professional Training</span>
+                                        <span class="tag bg-white/5 text-white/50">6 Months</span>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <p class="text-[11px] leading-relaxed opacity-70">
+                                            <strong>Tech Stack:</strong> Core PHP, PhpMyAdmin, and MySQLi Database
+                                            management.
+                                        </p>
+                                        <p class="text-[10px] italic opacity-50">
+                                            Built the Live E-commerce project mentioned in the projects section.
+                                        </p>
+                                    </div>
+
+                                    <div class="flex justify-between items-center">
+                                        <span
+                                            class="text-[9px] font-bold text-amber-400 tracking-widest uppercase">Issued
+                                            May 2021</span>
+                                        <i class="fas fa-check-circle text-amber-400 text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Education -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                            2015 - 2019
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-2xl font-bold">Bachelor of Technology in Computer Science &
+                                                Engineering</h3>
+                                            <p class="text-emerald-400 text-sm font-bold uppercase tracking-tight">Biju
+                                                Pattnaik University
+                                                of Technology, Odisha</p>
+                                        </div>
+                                        <i class="fas fa-university text-2xl opacity-20"></i>
+                                    </div>
+
+                                    <div class="bar-bg">
+                                        <div class="bar-fill" data-width="100%"></div>
+                                    </div>
+
+                                    <p class="mt-4 text-sm opacity-50">
+                                        Institute : Modern Engineering & Management Studies (MEMS), Balasore.
+                                    </p>
+                                </div>
+
+                                <div class="card-face card-back flex flex-col justify-between">
+                                    <div class="flex justify-between">
+                                        <span class="tag tag-edu">Engineering</span>
+                                        <span class="tag bg-blue-500/10 text-blue-400">Foundational</span>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <p class="text-[11px] leading-relaxed opacity-70">
+                                            <strong>Focus:</strong> Algorithms, Database Systems, & Software Engineering
+                                            principles.
+                                        </p>
+                                        <p class="text-[10px] italic opacity-50">
+                                            Active in tech fests, coding events, and academic projects.
+                                        </p>
+                                    </div>
+
+                                    <a href="#"
+                                        class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase hover:underline">
+                                        Degree Credentials
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 1: Education -->
+                    <div class="mb-12 relative journey-item">
+                        <div class="timeline-node" style="top: 20px;"></div>
+                        <div
+                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                            2003 - 2015
+                        </div>
+
+                        <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner">
+                                <div class="card-face">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold leading-tight">Higher Secondary (CBSE)</h3>
+                                            <p class="text-cyan-400 text-xs font-bold uppercase tracking-tight">Kendriya
+                                                Vidyalaya Sangathan</p>
+                                        </div>
+                                        <i class="fas fa-school text-2xl opacity-20"></i>
+                                    </div>
+
+                                    <div class="bar-bg">
+                                        <div class="bar-fill" data-width="100%"></div>
+                                    </div>
+
+                                    <p class="mt-4 text-xs opacity-50">
+                                        Regions : Mathura Cantt | Jammu | Guwahati | Nasirabad | Bangalore | Jabalpur
+                                    </p>
+                                </div>
+
+                                <div class="card-face card-back flex flex-col justify-between">
+                                    <div class="flex justify-between">
+                                        <span class="tag tag-edu">Schooling</span>
+                                        <span class="tag bg-cyan-500/10 text-cyan-400">Science Stream</span>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <p class="text-[11px] leading-relaxed opacity-70">
+                                            <strong>Curriculum:</strong> Physics, Chemistry, Mathematics, and C++
+                                            Programming.
+                                        </p>
+                                        <p class="text-[10px] italic opacity-50">
+                                            Strong academic and co-curricular performance in a disciplined environment.
+                                        </p>
+                                    </div>
+
+                                    <div class="text-[9px] font-bold text-cyan-400 tracking-widest uppercase">
+                                        Central Board of Secondary Education
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-32 px-6 reveal">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-6xl font-heading font-black mb-24 text-center uppercase tracking-tighter">My <span
+                        class="text-gradient">WORK</span></h2>
+                <div class="grid md:grid-cols-2 gap-10">
+
+                    <!-- Project 1 -->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">DevOps Engineer | Edureka</span>
+                                    <i class="fas fa-random text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">Java Spring Boot CI/CD on AWS</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">June 2025 -
+                                    July 2025</p>
+                                <p class="opacity-50 text-sm mb-auto">Building an automated CI/CD pipeline for a
+                                    Java-based Spring Boot project to streamline integration and deployment on AWS EC2.
+                                </p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">Jenkins</span>
+                                        <span class="tag bg-white/5">AWS EC2</span>
+                                        <span class="tag bg-white/5">Ansible</span>
+                                        <span class="tag bg-white/5">Grafana</span>
+                                        <span class="tag bg-white/5">Docker</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-4 opacity-80 list-disc list-inside">
+                                    <li>Engineered a robust pipeline using Jenkins, GitHub, and Ansible for automated
+                                        deployment on AWS.</li>
+                                    <li>Successfully containerized Java microservices using Docker and managed
+                                        orchestration via Docker Compose.</li>
+                                    <li>Integrated Prometheus and Grafana for real-time health monitoring and
+                                        performance visualization.</li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs">
+                                            VIEW SOURCE CODE <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">Data Analyst | Edureka</span>
+                                    <i class="fas fa-chart-bar text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">HR Analytics Data Dashboard</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">May 2025 -
+                                    June 2025</p>
+                                <p class="opacity-50 text-sm mb-auto">Designing an interactive dashboard to visualize
+                                    workforce metrics like attrition, hiring trends, and departmental performance.</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">Power BI</span>
+                                        <span class="tag bg-white/5">DAX</span>
+                                        <span class="tag bg-white/5">Excel</span>
+                                        <span class="tag bg-white/5">ETL</span>
+                                        <span class="tag bg-white/5">SQL</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Collaborated with HR Directors to define KPIs and business requirements.</li>
+                                    <li>Developed complex DAX measures for MoM% growth and dynamic filtering.</li>
+                                    <li>Managed ETL processes to clean and transform data from multiple sources.</li>
+                                    <li>Created "Story Points" to provide actionable insights for stakeholders.</li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            View Project <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">Insurance Policy Developer | Qalibre</span>
+                                    <i class="fas fa-shield-alt text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">Duck Creek: WC & General Liability</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">Apr 2023 –
+                                    Aug 2024</p>
+                                <p class="opacity-50 text-sm mb-auto">Configuring and debugging Duck Creek Policy
+                                    components for Arthur J. Gallagher & Co., focusing on rate changes and manuscript
+                                    development.</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">Duck Creek Author</span>
+                                        <span class="tag bg-white/5">Duck Creek Express 2</span>
+                                        <span class="tag bg-white/5">Trace Monitor</span>
+                                        <span class="tag bg-white/5">XML/XSLT</span>
+                                        <span class="tag bg-white/5">Beyond Compare</span>
+                                        <span class="tag bg-white/5">Notepad++</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Developed and versioned Table Manuscripts for production rate changes.</li>
+                                    <li>Resolved complex premium mismatch issues by analyzing Duck Creek Trace files.
+                                    </li>
+                                    <li>Supported senior management in configuring policy components for the Canadian
+                                        market.</li>
+                                    <li>Ensured accurate deployment of rate revisions for General Liability products.
+                                    </li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            View Details <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">XML Configurator | Qalibre</span>
+                                    <i class="fas fa-user-shield text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">OneShield: Security & Artisan</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">Oct 2023 –
+                                    Feb 2024</p>
+                                <p class="opacity-50 text-sm mb-auto">Developing integration components for West
+                                    Congress Insurance System, ensuring seamless data flow between frontend and backend
+                                    via JSON/XML.</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">JSON</span>
+                                        <span class="tag bg-white/5">XML</span>
+                                        <span class="tag bg-white/5">Postman</span>
+                                        <span class="tag bg-white/5">SQL</span>
+                                        <span class="tag bg-white/5">JIRA</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Developed JSON/XML configuration files for seamless frontend-to-database
+                                        integration.</li>
+                                    <li>Performed rigorous Unit Testing using Postman to validate data flow and API
+                                        accuracy.</li>
+                                    <li>Managed task lifecycles through JIRA within a fast-paced Agile/Scrum
+                                        environment.</li>
+                                    <li>Mapped data from Excel Web Editor to DB for Insurance Agents and Underwriters.
+                                    </li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            View Repository <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 5-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">Software Engineer | Qalibre</span>
+                                    <i class="fas fa-bolt text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">Duck Creek Automation Accelerators</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">Dec 2022 –
+                                    Sep 2023</p>
+                                <p class="opacity-50 text-sm mb-auto">Developing internal automation tools and .NET Web
+                                    APIs to optimize Duck Creek Policy development and premium validation workflows.</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">.NET Web API</span>
+                                        <span class="tag bg-white/5">Azure Blob</span>
+                                        <span class="tag bg-white/5">Express 3</span>
+                                        <span class="tag bg-white/5">SQL</span>
+                                        <span class="tag bg-white/5">Batch Scripting</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-2 opacity-80 list-disc list-inside">
+                                    <li>Developed .NET Web APIs to automate premium matching between Rater and Duck
+                                        Creek UI.</li>
+                                    <li>Created a custom Express 3 Dashboard with role-based access for accelerator
+                                        management.</li>
+                                    <li>Engineered an automated trace file storage system using Azure Blob Storage via
+                                        API calls.</li>
+                                    <li>Replicated Trace Monitor functionality in Express 3 using Manuscript Server
+                                        Requests.</li>
+                                    <li>Authored technical release documents and Batch Scripts for seamless server
+                                        deployments.</li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.pacificspecialty.com/" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            Visit Page <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 6-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">UI/UX Engineer | Qalibre</span>
+                                    <i class="fas fa-map-marker-alt text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">AD&D Japan: UI/UX Modernization</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">Aug 2022 –
+                                    Nov 2022</p>
+                                <p class="opacity-50 text-sm mb-auto">Modernizing the Accidental Death & Dismemberment
+                                    insurance interface for the Japan region by upgrading to Duck Creek Express 3.</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">Duck Creek Express 3</span>
+                                        <span class="tag bg-white/5">Author</span>
+                                        <span class="tag bg-white/5">Page Builder</span>
+                                        <span class="tag bg-white/5">Multi-Language</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Led the migration of legacy Express 2 UI components to the modern Express 3
+                                        architecture.</li>
+                                    <li>Utilized Duck Creek Design System and Page Builder to create intuitive agent
+                                        workflows.</li>
+                                    <li>Implemented the Multi-Language Model (i18n) specifically for Japan regional
+                                        standards.</li>
+                                    <li>Designed a custom Policy Dashboard in Express 3 tailored for Underwriters and
+                                        Agents.</li>
+                                    <li>Developed high-fidelity POCs focusing on regional usability and design
+                                        alignment.</li>
+                                    <li class="list-none pt-2">
+                                        <span class="text-primary/50 font-bold text-[10px] uppercase tracking-tighter">
+                                            Internal Qalibre POC Development
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 7-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">Policy Configurator | Internal Training</span>
+                                    <i class="fas fa-graduation-cap text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">Dwelling Rating Engine Development</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">June 2025 -
+                                    July 2025</p>
+                                <p class="opacity-50 text-sm mb-auto">An intensive in-house training project focused on
+                                    building core rating components and Express 2 user flows for Dwelling Insurance
+                                    (DP-03).</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">Duck Creek Rating</span>
+                                        <span class="tag bg-white/5">Express 2</span>
+                                        <span class="tag bg-white/5">User Admin</span>
+                                        <span class="tag bg-white/5">Print Jobs</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">Training &
+                                    Implementation</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Developed physical Declaration Forms and integrated them into automated Print
+                                        Jobs.</li>
+                                    <li>Built structured User Interfaces in Express 2 to facilitate quote management.
+                                    </li>
+                                    <li>Created custom fields and established binding rules for policy quotes.</li>
+                                    <li>Managed security and access via Entity and User creation in User Admin.</li>
+                                    <li>Gained hands-on experience in the New Jersey scope for dwelling insurance.</li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            View Training Repo <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 8-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">Duck Creek Configurator | Training</span>
+                                    <i class="fas fa-home text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">Homeowners (HO-2 Broad Form)</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">Mar 2022 –
+                                    Apr 2022</p>
+                                <p class="opacity-50 text-sm mb-auto">Internal training focused on the end-to-end policy
+                                    lifecycle of HO-2 products, including UI development and user administration.</p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">Duck Creek Author</span>
+                                        <span class="tag bg-white/5">Express 2</span>
+                                        <span class="tag bg-white/5">User Admin</span>
+                                        <span class="tag bg-white/5">CA Scope</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">Training &
+                                    Implementation</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Configured physical Declaration Forms and managed integration into Print Jobs.
+                                    </li>
+                                    <li>Developed interactive User Interfaces using Express 2 for policy quote entry.
+                                    </li>
+                                    <li>Established binding rules and custom field logic for Broad Form (HO-2) products.
+                                    </li>
+                                    <li>Gained expertise in User Admin for managing entities and system permissions.
+                                    </li>
+                                    <li>Applied California-specific insurance standards to the configuration workflow.
+                                    </li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            View Training Repo <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 9-->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">Associate Software Engineer | Qalibre</span>
+                                    <i class="fas fa-truck text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">Commercial Auto Insurance</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">Jan 2021 –
+                                    Mar 2021</p>
+                                <p class="opacity-50 text-sm mb-auto">Enhancing the Commercial Auto insurance workflow
+                                    by improving form generation and ensuring policy data accuracy for the NY region.
+                                </p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">HTML/CSS</span>
+                                        <span class="tag bg-white/5">SQL</span>
+                                        <span class="tag bg-white/5">Unit Testing</span>
+                                        <span class="tag bg-white/5">NY Scope</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <ul class="text-sm space-y-3 opacity-80 list-disc list-inside">
+                                    <li>Developed high-fidelity physical Declaration Forms using HTML and CSS for
+                                        policyholders.</li>
+                                    <li>Identified and executed SQL data fixes to resolve critical Premium Mismatch
+                                        issues.</li>
+                                    <li>Conducted rigorous Unit Testing on automated form generation systems to ensure
+                                        compliance.</li>
+                                    <li>Deployed production fixes to streamline the issuance of Commercial Auto
+                                        policies.</li>
+                                    <li>Collaborated with senior engineers to maintain data integrity across backend
+                                        systems.</li>
+                                    <li class="list-none pt-2">
+                                        <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                            class="text-primary hover:underline font-bold text-xs uppercase">
+                                            View Repository <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 10 -->
+                    <div class="flip-card project-card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-inner">
+                            <div class="card-face">
+                                <div class="flex justify-between items-start mb-6">
+                                    <span class="tag tag-role">PHP Developer | Ducat India</span>
+                                    <i class="fas fa-shopping-cart text-primary opacity-30 text-xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-1 uppercase">E-Commerce Platform</h3>
+                                <p class="text-sm font-bold text-primary/70 uppercase tracking-widest mb-6">June 2025 -
+                                    July 2025</p>
+                                <p class="opacity-50 text-sm mb-auto">Developing a functional e-commerce solution
+                                    focused on server-side logic, database management, and user experience using PHP.
+                                </p>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <p class="text-[10px] font-bold uppercase opacity-30 tracking-widest mb-3">
+                                        Technologies</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="tag bg-white/5">PHP</span>
+                                        <span class="tag bg-white/5">MySQL</span>
+                                        <span class="tag bg-white/5">HTML/CSS</span>
+                                        <span class="tag bg-white/5">JavaScript</span>
+                                        <span class="tag bg-white/5">Bootstrap 5</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-face card-back p-10 flex flex-col justify-center text-center">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+                                    Implementation Details</h4>
+                                <div class="flex-grow flex items-center justify-center">
+                                    <p class="text-sm opacity-30 italic">Details to be updated...</p>
+                                </div>
+                                <div class="list-none pt-2">
+                                    <a href="https://www.github.com/iamabinashpanda" target="_blank"
+                                        class="text-primary hover:underline font-bold text-xs uppercase">
+                                        View Source Code <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- INTERESTS SECTION -->
+        <section id="interests" class="px-6 reveal">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-5xl font-heading font-bold mb-20 text-center uppercase tracking-tighter">Lifestyle &
+                    <span class="text-gradient">Interests</span>
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div onclick="showHobby('exploring')"
+                        class="group relative h-80 rounded-[40px] overflow-hidden cursor-pointer border border-white/5">
+                        <img src="https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?auto=format&fit=crop&q=80&w=600"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-primary/20 transition-all">
+                            <span class="text-2xl font-bold text-white tracking-widest uppercase">EXPLORING</span>
+                        </div>
+                    </div>
+                    <div onclick="showHobby('photography')"
+                        class="group relative h-80 rounded-[40px] overflow-hidden cursor-pointer border border-white/5">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=600"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-secondary/20 transition-all">
+                            <span class="text-2xl font-bold text-white tracking-widest uppercase">PHOTOGRAPHY</span>
+                        </div>
+                    </div>
+                    <div onclick="showHobby('gym')"
+                        class="group relative h-80 rounded-[40px] overflow-hidden cursor-pointer border border-white/5">
+                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=600"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-lime-500/20 transition-all">
+                            <span class="text-2xl font-bold text-white tracking-widest uppercase">GYM & FITNESS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="px-6 reveal mb-20">
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-20">
+                <div class="space-y-12">
+                    <h2 class="text-7xl font-heading font-bold uppercase tracking-tighter">Let's <br><span
+                            class="text-gradient">Connect</span></h2>
+                    <div class="space-y-6 text-xl">
+                        <div class="flex items-center gap-6"><i class="fas fa-envelope text-primary"></i> <span
+                                class="opacity-60">toabinashpanda@gmail.com</span></div>
+                        <div class="flex items-center gap-6"><i class="fas fa-phone text-secondary"></i> <span
+                                class="opacity-60">(+61) 0706 8474 1930</span></div>
+                        <div class="flex items-center gap-6"><i class="fas fa-map-marker-alt text-emerald-400"></i>
+                            <span class="opacity-60">NSW, Australia</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 mt-8">
+                        <a href="https://linkedin.com/in/iamabinashpanda" target="_blank"
+                            class="text-white/50 hover:text-[#0077b5] transition-colors duration-300 text-2xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/iamabinashpanda" target="_blank"
+                            class="text-white/50 hover:text-white transition-colors duration-300 text-2xl">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://youtube.com/@iamabinashpanda" target="_blank"
+                            class="text-white/50 hover:text-[#ff0000] transition-colors duration-300 text-2xl">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://instagram.com/iamabinashpanda" target="_blank"
+                            class="text-white/50 hover:text-[#e4405f] transition-colors duration-300 text-2xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-12 rounded-[40px] border border-white/10 flex items-center justify-center">
+                    <p class="text-2xl opacity-50 text-center">Currently open to work and collaboration in <span
+                            class="text-white font-bold">AI Engineering</span> and <span
+                            class="text-white font-bold">Scalable Deployment</span>.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Hobby Modal -->
+    <div id="hobby-modal" class="modal" onclick="closeModal()">
+        <div class="max-w-6xl w-full bg-black/90 p-8 rounded-[40px] relative border border-white/10"
+            onclick="event.stopPropagation()">
+            <button onclick="closeModal()"
+                class="absolute -top-12 right-0 text-white text-3xl hover:text-primary">&times;</button>
+            <div class="text-center mb-10">
+                <h3 id="modal-title" class="text-3xl font-heading text-gradient uppercase tracking-widest">Gallery</h3>
+                <p id="modal-subtitle" class="text-sm opacity-40 mt-2">Scroll horizontally to view photos</p>
+            </div>
+            <div id="image-slider" class="w-full flex overflow-x-auto gap-8 snap-x pb-8 scrollbar-hide">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-10">
+        <div
+            class="max-w-7xl mx-auto px-6 flex justify-between items-center text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">
+            <div>&copy; 2026 ABINASH PANDA</div>
+            <div class="hidden md:block">DATA & AI ENTHUSIAST</div>
+            <div>NSW, AUSTRALIA</div>
+        </div>
+
+    </footer>
+
+    <script>
+        const hobbyData = {
+            gym: {
+                title: "Gym & Fitness Journey",
+                items: [
+                    {
+                        url: '/assets/interests/gym/3.png',
+                        title: "Early Weight Gain",
+                        caption: "July 2024",
+                        link: "https://www.instagram.com/stories/highlights/18416405830128892/"
+                    },
+                    {
+                        url: '/assets/interests/gym/1.png',
+                        title: "Peak Performance Training",
+                        caption: "July 2025",
+                        link: "https://www.instagram.com/iamabinashpanda/p/DS9yfwqAXqn/"
+                    },
+                    {
+                        url: "/assets/interests/gym/2.png",
+                        title: "Functional Conditioning",
+                        caption: "September 2025",
+                        link: "https://www.instagram.com/iamabinashpanda/p/DPbEbvuAW85/"
+                    },
+                    {
+                        url: "/assets/interests/gym/4.png",
+                        title: "Core Stability Work",
+                        caption: "2018",
+                        link: "https://www.instagram.com/p/CAa7u9sJNWa/"
+                    }
+                ]
+            },
+            exploring: {
+                title: "Exploring New Horizons",
+                items: [
+                    {
+                        url: "/assets/interests/explore/kolkata.jpg",
+                        title: "Kolkata",
+                        caption: "West Bengal • 2025",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/mayurbhanj.jpg",
+                        title: "Mayurbhanj",
+                        caption: "Odisha • 2024",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/cuttack.jpg",
+                        title: "Cuttack",
+                        caption: "Odisha • 2022-2024",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/gangtok.jpg",
+                        title: "Gangtok",
+                        caption: "Sikkim • 2017",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/new delhi.jpg",
+                        title: "New Delhi",
+                        caption: "India Capital • 2018-2019",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/gurugram.jpg",
+                        title: "Gurugram",
+                        caption: "Haryana• 2019",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/mathura.jpg",
+                        title: "Mathura",
+                        caption: "Uttar Pradesh • 2013-2015",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/agra.jpg",
+                        title: "Agra",
+                        caption: "Uttar Pradesh • 2015",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/kalimpong.jpg",
+                        title: "Kalimpong",
+                        caption: "West Bengal • 2016-2017",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/guwahati.jpg",
+                        title: "Guwahati",
+                        caption: "Assam • 2008-2010",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/shillong.jpg",
+                        title: "Shillong",
+                        caption: "Meghalaya • 2009",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/jammu.jpg",
+                        title: "Jammu",
+                        caption: "Jammu & Kashmir • 2011-2013",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/jabalpur.jpg",
+                        title: "Jabalpur",
+                        caption: "Madhya Pradesh • 2000-2002",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/bangalore.jpg",
+                        title: "Bangalore",
+                        caption: "Karnataka • 2003-2004",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/ajmer.jpg",
+                        title: "Ajmer",
+                        caption: "Rajasthan • 2005-2007",
+                        link: ""
+                    },
+                    {
+                        url: "/assets/interests/explore/srinagar.jpg",
+                        title: "Srinagar",
+                        caption: "Jammu & Kashmir • 1998-1999",
+                        link: ""
+                    }
+                ]
+            },
+            photography: {
+                title: "Visual Storytelling",
+                items: [
+                    {
+                        url: "assets/interests/photograpy/1.jpeg",
+                        title: "Event Vibes",
+                        caption: "Bhubaneshwar • 2023",
+                        link: "#"
+                    },
+                    {
+                        url: "assets\\interests\\photograpy\\2.jpeg",
+                        title: "The Modern Work Mood",
+                        caption: "DLF • 2023",
+                        link: "#"
+                    },
+                    {
+                        url: "assets/interests/photograpy/3.jpeg",
+                        title: "Captured at Puri",
+                        caption: "Puri • 2025",
+                        link: "#"
+                    },
+                    {
+                        url: "assets\\interests\\photograpy\\4.jpeg",
+                        title: "Waves of Freedom",
+                        caption: "Paradeep • 2023",
+                        link: "#"
+                    }
+                ]
+            }
+        };
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const icon = document.getElementById('theme-icon');
+            if (icon.classList.contains('fa-moon')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        function showHobby(category) {
+            const data = hobbyData[category];
+            const modal = document.getElementById('hobby-modal');
+            const slider = document.getElementById('image-slider');
+            document.getElementById('modal-title').innerText = data.title;
+
+            slider.innerHTML = data.items.map(item => `
+                <div class="gallery-item group">
+                    <div class="relative overflow-hidden rounded-[32px] aspect-[4/5] border border-white/10">
+                        <img src="${item.url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-6 flex flex-col justify-end">
+                            <h4 class="text-xl font-bold text-white mb-1">${item.title}</h4>
+                            <p class="text-[10px] text-primary font-bold tracking-widest uppercase mb-4">${item.caption}</p>
+                            <a href="${item.link}" target="_blank" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-[10px] font-bold py-2 px-4 rounded-lg self-start transition-all uppercase tracking-widest">VIEW STORY →</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('hobby-modal').classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function initScrollEffects() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Animate progress bars
+                        const bars = entry.target.querySelectorAll('.bar-fill');
+                        bars.forEach(bar => {
+                            bar.style.width = bar.dataset.width;
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.journey-item').forEach(el => observer.observe(el));
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // Active Link Highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary', 'opacity-100');
+                link.classList.add('opacity-60');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-primary', 'opacity-100');
+                    link.classList.remove('opacity-60');
+                }
+            });
+        });
+
+        window.onload = initScrollEffects;
+    </script>
+</body>
+
+</html>
