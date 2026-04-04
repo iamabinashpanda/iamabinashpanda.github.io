@@ -18,30 +18,36 @@
             --text: #ffffff;
             --glass: rgba(255, 255, 255, 0.03);
         }
+
         /* Light Theme Specific Overrides for About Me */
-body.light-theme .about-container {
-    background: rgba(0, 0, 0, 0.04); /* Subtle dark glass for light mode */
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
+        body.light-theme .about-container {
+            background: rgba(0, 0, 0, 0.04);
+            /* Subtle dark glass for light mode */
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
 
-body.light-theme .about-text {
-    color: #1e293b; /* Ensure main text is dark slate */
-}
+        body.light-theme .about-text {
+            color: #1e293b;
+            /* Ensure main text is dark slate */
+        }
 
-/* Fix for the highlighted/white text in your screenshots */
-body.light-theme .about-text strong, 
-body.light-theme .about-text b,
-body.light-theme .highlight-text {
-    color: #0f172a; /* Darker navy for emphasized text */
-    font-weight: 800;
-}
+        /* Fix for the highlighted/white text in your screenshots */
+        body.light-theme .about-text strong,
+        body.light-theme .about-text b,
+        body.light-theme .highlight-text {
+            color: #0f172a;
+            /* Darker navy for emphasized text */
+            font-weight: 800;
+        }
 
-/* Ensure the primary/secondary gradients still pop */
-body.light-theme .accent-text {
-    background: linear-gradient(135deg, #0891b2, #7e22ce); /* Darker version of primary/secondary */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        /* Ensure the primary/secondary gradients still pop */
+        body.light-theme .accent-text {
+            background: linear-gradient(135deg, #0891b2, #7e22ce);
+            /* Darker version of primary/secondary */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         body.light-theme {
             --bg: #f8fafc;
             --text: #0f172a;
@@ -183,6 +189,17 @@ body.light-theme .accent-text {
 
         .journey-card .card-face {
             padding: 1.5rem;
+        }
+
+        .project-card {
+            transition: opacity 0.4s ease, transform 0.4s ease, display 0.4s allow-discrete;
+        }
+
+        .active-filter {
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+            background: rgba(34, 211, 238, 0.1) !important;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
         }
 
         /* Timeline Axis */
@@ -328,100 +345,250 @@ body.light-theme .accent-text {
 
     <!-- Main -->
     <main class="pt-16">
+        
         <!-- HOME SECTION -->
-        <section id="home" class="px-6">
-            <div class="max-w-6xl mx-auto">
-                <!-- Hero -->
-                <div class="flex flex-col lg:flex-row items-center justify-between gap-12 mb-32 pt-20">
-                    <div class="lg:w-1/2 relative">
-                    <div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full"></div>
-                    <img src="assets\img\profile.png"
-                        class="relative z-10 w-full h-[500px] object-cover rounded-[40px] border border-white/10 shadow-2xl"
-                        alt="Abinash">
-                </div>
-                    <div class="lg:w-1/2 space-y-6">
-                        <h1 class="text-6xl lg:text-8xl font-extrabold font-heading leading-tight">
-                            Hello, <br>I'm <br><span class="text-gradient">Abinash Panda</span>
-                        </h1>
-                        <p class="text-xl opacity-60 max-w-md">Data & AI Enthusiast with E2E development and Deployments and a specialized Duck Creek Policy Configurator </p>
-                        <div class="flex flex-wrap gap-6 mt-8">
-                            <a href="https://linkedin.com/in/iamabinashpanda" target="_blank"
-                                class="text-white/50 hover:text-[#0077b5] transition-all duration-300 text-2xl">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="https://github.com/iamabinashpanda" target="_blank"
-                                class="text-white/50 hover:text-white transition-all duration-300 text-2xl">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href="https://instagram.com/iamabinashpanda" target="_blank"
-                                class="text-white/50 hover:text-[#e4405f] transition-all duration-300 text-2xl">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="https://youtube.com/yourchannel" target="_blank"
-                                class="text-white/50 hover:text-[#ff0000] transition-all duration-300 text-2xl">
-                                <i class="fab fa-youtube"></i>
-                            </a>
+        <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
+            <div class="absolute inset-0 z-0 pointer-events-none">
+                <div class="code-particle absolute top-10 left-[10%] text-primary/20 text-4xl">&lt; /&gt;</div>
+                <div class="code-particle absolute top-40 right-[15%] text-secondary/20 text-2xl">{ }</div>
+                <div class="code-particle absolute bottom-20 left-[20%] text-primary/20 text-3xl">[ ]</div>
+                <div class="code-particle absolute bottom-40 right-[10%] text-secondary/20 text-5xl">&lt; &gt;</div>
 
-                            <a href="https://hackerrank.com/iamabinashpanda" target="_blank"
-                                class="text-white/50 hover:text-[#2ec866] transition-all duration-300 text-2xl">
-                                <i class="fab fa-hackerrank"></i>
-                            </a>
-                            <a href="https://leetcode.com/iamabinashpanda" target="_blank"
-                                class="text-white/50 hover:text-[#ffa116] transition-all duration-300 text-2xl">
-                                <i class="fas fa-code"></i> </a>
-                            <a href="https://kaggle.com/iamabinashpanda" target="_blank"
-                                class="text-white/50 hover:text-[#20beff] transition-all duration-300 text-2xl">
-                                <i class="fab fa-kaggle"></i>
-                            </a>
+                <div
+                    class="bubble absolute w-64 h-64 bg-primary/10 blur-[120px] rounded-full top-1/4 left-1/4 animate-pulse">
+                </div>
+                <div class="bubble absolute w-96 h-96 bg-secondary/10 blur-[150px] rounded-full bottom-1/4 right-1/4 animate-pulse"
+                    style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto relative z-10 text-center">
+                <div class="flex justify-center mb-8">
+                    <div class="relative group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-50 group-hover:opacity-100 transition duration-1000">
                         </div>
+                        <img src="assets/img/profile.png"
+                            class="relative w-20 h-20 rounded-full border-2 border-white/20 object-cover shadow-2xl"
+                            alt="Abinash">
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <h1 class="text-6xl lg:text-9xl font-black font-heading tracking-tighter leading-none">
+                        <span class="opacity-50 text-4xl lg:text-5xl block mb-4">H e l l o ,  I '  m</span>
+                        <span class="text-gradient inline-block animate-bounce-slow">Abinash Panda</span>
+                    </h1>
+
+                    <div class="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">Property & Casualty Insurance</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-secondary">Data</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">Gen AI</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-secondary">DevOps</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">MLOps</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">AWS</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">Business Intelligence</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">Agentic AI</span>
+                        <span
+                            class="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-primary">Duck Creek Policy</span>
+                    </div>
+
+                    <p class="text-xl lg:text-2xl opacity-60 max-w-2xl mx-auto leading-relaxed">
+                        Data & AI Enthusiast specializing in <span class="text-white">E2E Deployments</span> and <span
+                            class="text-white">Duck Creek Policy Configurator</span>.
+                    </p>
+
+                    <div class="flex justify-center flex-wrap gap-8 py-4">
+                        <a href="https://linkedin.com/in/iamabinashpanda" target="_blank"
+                            class="text-white/30 hover:text-primary transition-all text-2xl"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/iamabinashpanda" target="_blank"
+                            class="text-white/30 hover:text-white transition-all text-2xl"><i
+                                class="fab fa-github"></i></a>
+                        <a href="https://leetcode.com/iamabinashpanda" target="_blank"
+                            class="text-white/30 hover:text-[#ffa116] transition-all text-2xl"><i
+                                class="fas fa-code"></i></a>
+                        <a href="https://kaggle.com/iamabinashpanda" target="_blank"
+                            class="text-white/30 hover:text-[#20beff] transition-all text-2xl"><i
+                                class="fab fa-kaggle"></i></a>
+                    </div>
+
+                    <div class="pt-8">
                         <a href="#contact"
-                            class="inline-block px-10 py-4 bg-gradient-to-b
-                             from-lime-400 to-amber-400 text-black font-bold rounded-2xl hover:scale-105 transition-transform">Open to
-                            Work - Let's Talk</a>
+                            class="relative inline-block px-12 py-5 bg-white text-black font-black uppercase tracking-tighter rounded-2xl hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                            Let's Build Something
+                        </a>
                     </div>
                 </div>
             </div>
-            </div>
-            </div>
         </section>
 
+        <style>
+            @keyframes float {
+
+                0%,
+                100% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.2;
+                }
+
+                50% {
+                    transform: translateY(-40px) rotate(10deg);
+                    opacity: 0.5;
+                }
+            }
+
+            .code-particle {
+                animation: float 6s ease-in-out infinite;
+                font-family: 'Space Grotesk', monospace;
+                font-weight: bold;
+            }
+
+            .code-particle:nth-child(2) {
+                animation-delay: 1s;
+                animation-duration: 8s;
+            }
+
+            .code-particle:nth-child(3) {
+                animation-delay: 2s;
+                animation-duration: 7s;
+            }
+
+            .code-particle:nth-child(4) {
+                animation-delay: 3s;
+                animation-duration: 9s;
+            }
+
+            .animate-bounce-slow {
+                animation: bounce-slow 4s ease-in-out infinite;
+            }
+
+            @keyframes bounce-slow {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+        </style>
+
         <!-- ABOUT SECTION -->
-        <section id="about" class="px-6 reveal mb-32">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-5xl font-heading font-bold mb-10 text-center uppercase tracking-tighter">
-                    About <span class="text-gradient">Me</span>
-                </h2>
+        <section id="about" class="py-24 relative overflow-hidden">
+            <div class="container mx-auto px-6 relative z-10">
 
-                <div
-                    class="bg-white/5 p-10 md:p-14 rounded-[40px] border border-white/5 text-lg md:text-xl leading-relaxed text-center shadow-2xl backdrop-blur-sm">
+                <div class="mb-16 reveal">
+                    <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
+                        The <span class="text-gradient">Narrative</span>
+                    </h2>
+                    <div class="h-2 w-24 bg-gradient-to-r from-cyan-400 to-purple-600 mt-4"></div>
+                </div>
 
-                    <p class="mb-6 opacity-90 font-medium text-white">
-                        "Build for today, but architect for tomorrow."
-                    </p>
+                <div class="flex flex-col lg:flex-row gap-16 items-start">
 
-                    <p class="mb-6 opacity-60">
-                        I am a <strong class="text-white opacity-100">Software Engineer</strong> and <strong
-                            class="text-white opacity-100">Data Enthusiast</strong> with nearly 3 years of enterprise
-                        experience at <span class="text-blue-400">Qalibre</span>. My journey began in the complex world
-                        of <strong class="text-white opacity-100">P&C Insurance technology</strong>, where I mastered
-                        Duck Creek and OneShield ecosystems to deliver scalable policy solutions for global markets
-                        including Canada, USA, and Japan.
-                    </p>
+                    <div class="w-full lg:w-1/3 sticky top-24">
+                        <div class="relative group mb-8">
+                            <div
+                                class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-60 transition duration-1000">
+                            </div>
+                            <img src="assets/img/profile.png" alt="Abinash Panda"
+                                class="relative rounded-3xl w-full aspect-[4/5] object-cover grayscale hover:grayscale-0 transition-all duration-700 border border-white/10 shadow-2xl">
+                        </div>
 
-                    <p class="mb-6 opacity-60">
-                        Currently, I am pivoting into the frontier of <strong class="text-white opacity-100">Artificial
-                            Intelligence and MLOps</strong>. I am deep-diving into <span
-                            class="text-emerald-400">Generative AI, RAG pipelines, and Cloud Architecture</span>. My
-                        goal is to merge my enterprise software foundations with modern AI to create robust,
-                        production-ready systems that scale seamlessly.
-                    </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+                                <p class="text-2xl font-bold text-gradient">3+ Yrs</p>
+                                <p class="text-[10px] uppercase tracking-widest opacity-50">Experience</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+                                <p class="text-2xl font-bold text-gradient">10+</p>
+                                <p class="text-[10px] uppercase tracking-widest opacity-50">Projects</p>
+                            </div>
+                        </div>
+                    </div>
 
-                    <p class="opacity-60">
-                        Beyond the code, I am a traveler and culture seeker. I believe that understanding the world
-                        makes me a better engineer, bringing <strong class="text-white opacity-100">empathy and fresh
-                            perspectives</strong> to every technical challenge I take on.
-                    </p>
+                    <div class="w-full lg:w-2/3 space-y-8 about-content">
 
+                        <div
+                            class="p-8 md:p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl hover:border-cyan-500/30 transition-colors duration-500">
+                            <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                                <i class="fas fa-terminal text-cyan-400"></i>
+                                Who is Abinash Panda?
+                            </h3>
+                            <p class="text-lg leading-relaxed opacity-80 mb-6">
+                                I am a <span class="highlight-text font-bold">Software Engineer and Data
+                                    Enthusiast</span> driven by the intersection of stable enterprise systems and the
+                                frontier of <span class="highlight-text font-bold">Artificial Intelligence</span>.
+                                Fromerly, based in the tech ecosystem of <span
+                                    class="highlight-text font-bold">Qalibre</span>, I’ve spent 3 years
+                                in development insurance solutions using Duck Creek Tools that bridge complex business logic with seamless user
+                                experiences.
+                            </p>
+                            <p class="text-lg leading-relaxed opacity-80">
+                                My career mantra is simple: <span class="italic text-cyan-400">"Build for today, but
+                                    architect for tomorrow."</span> This means every line of code I write is evaluated
+                                for its scalability, reusability and its ability to integrate with the data-driven future.
+                            </p>
+                        </div>
+
+                        <div class="p-8 md:p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl">
+                            <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                                <i class="fas fa-history text-purple-400"></i>
+                                The Professional Evolution
+                            </h3>
+                            <div class="space-y-6 text-base opacity-80 leading-relaxed">
+                                <p>
+                                    My foundation was built in the rigorous world of <span class="highlight-text">P&C
+                                        Insurance technology</span>. Navigating the ecosystems of <strong>Duck
+                                        Creek</strong> and <strong>OneShield</strong>, I delivered policy
+                                    solutions for global markets, including the USA, Canada, and Japan. This era taught
+                                    me the importance of <span class="highlight-text">Data Integrity</span> and regional
+                                    compliance.
+                                </p>
+                                <p>
+                                    Transitioning from a traditional developer to a <span class="highlight-text">Duck Creek UI/UX
+                                        Engineer</span> and then into <span
+                                        class="highlight-text font-bold text-gradient">AI driven - Cloud, DevOps and Data</span>, I realized that
+                                    the modern engineer must be a polyglot—fluent in both the code and the
+                                    infrastructure that hosts it.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="p-8 md:p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl border-l-4 border-l-cyan-500">
+                            <h3 class="text-2xl font-bold mb-4 text-cyan-400">The Pivot to AI & MLOps</h3>
+                            <p class="text-lg opacity-80 leading-relaxed">
+                                The horizon of my work is now focused on <span
+                                    class="highlight-text font-bold">Generative AI and RAG (Retrieval-Augmented
+                                    Generation) pipelines</span>. I am deep-diving into cloud architecture (AWS) and
+                                MLOps to ensure that AI isn't just a "feature," but a robust, production-ready backbone
+                                for the next generation of software.
+                            </p>
+                        </div>
+
+                        <div class="pt-6 flex flex-wrap gap-4">
+                            <span
+                                class="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium hover:bg-cyan-500/10 transition-colors">🚀
+                                Tech Polyglot</span>
+                            <span
+                                class="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium hover:bg-purple-500/10 transition-colors">🌍
+                                Culture Seeker</span>
+                            <span
+                                class="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium hover:bg-green-500/10 transition-colors">🏔️
+                                Traveler</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -429,41 +596,245 @@ body.light-theme .accent-text {
         <!-- SERVICES SECTION -->
         <section id="services" class="px-6 reveal">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-5xl font-heading font-bold mb-20 text-center uppercase tracking-tighter">Technical <span
-                        class="text-gradient">Services</span></h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div
-                        class="bg-white/5 p-12 rounded-[40px] text-center border border-white/10 group hover:bg-emerald-500/5 transition-all">
-                        <i
-                            class="fas fa-server text-4xl text-emerald-400 mb-8 group-hover:scale-110 transition-transform"></i>
-                        <h4 class="text-xl font-bold mb-4">Software Development</h4>
-                        <p class="text-sm opacity-40">Automated model lifecycles and CI/CD for AI.</p>
-                    </div>
-                    <div
-                        class="bg-white/5 p-12 rounded-[40px] text-center border border-white/10 group hover:bg-emerald-500/5 transition-all">
-                        <i
-                            class="fas fa-microchip text-4xl text-emerald-400 mb-8 group-hover:scale-110 transition-transform"></i>
-                        <h4 class="text-xl font-bold mb-4">Data and AI</h4>
-                        <p class="text-sm opacity-40">Designing scalable and efficient neural systems.</p>
-                    </div>
-                    <div
-                        class="bg-white/5 p-12 rounded-[40px] text-center border border-white/10 group hover:bg-emerald-500/5 transition-all">
-                        <i
-                            class="fas fa-cloud text-4xl text-emerald-400 mb-8 group-hover:scale-110 transition-transform"></i>
-                        <h4 class="text-xl font-bold mb-4">Cloud and DevOps</h4>
-                        <p class="text-sm opacity-40">Containerized solutions using AWS & Azure.</p>
+                <div class="max-w-7xl mx-auto px-4">
+                    <h2 class="text-5xl font-heading font-bold mb-20 text-center uppercase tracking-tighter">
+                        Technical <span class="text-gradient">Capabilities</span>
+                    </h2>
+            
+                    <div class="grid md:grid-cols-3 gap-0 relative items-stretch">
+            
+                        <div
+                            class="bg-white/5 border border-white/10 rounded-t-[40px] md:rounded-l-[40px] md:rounded-tr-none p-10 hover:bg-blue-500/[0.05] transition-all flex flex-col relative overflow-hidden group">
+                            <div class="skills-floating-bg">
+                                <i class="fas fa-shield-alt"></i>
+                                <i class="fas fa-file-invoice"></i>
+                                <i class="fas fa-database"></i>
+                            </div>
+            
+                            <div class="relative z-10">
+                                <div class="mb-8">
+                                    <span class="text-blue-400 text-xs font-bold uppercase tracking-[0.2em]">Domain Expert</span>
+                                    <h3 class="text-3xl font-bold mt-2">P&C Insurance</h3>
+                                </div>
+            
+                                <div class="space-y-8">
+                                    <div>
+                                        <h4 class="text-blue-400 text-xs font-black uppercase mb-4 tracking-widest">Duck Creek Suite
+                                        </h4>
+                                        <ul class="space-y-3">
+                                            <li class="pricing-li"><i class="fas fa-check text-blue-500/50"></i> Author & Example
+                                            </li>
+                                            <li class="pricing-li"><i class="fas fa-check text-blue-500/50"></i> Trace Monitor</li>
+                                            <li class="pricing-li"><i class="fas fa-check text-blue-500/50"></i> Transmissions</li>
+                                            <li class="pricing-li"><i class="fas fa-check text-blue-500/50"></i> Express / Server
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-blue-400 text-xs font-black uppercase mb-4 tracking-widest">Data & Logic
+                                        </h4>
+                                        <ul class="space-y-3">
+                                            <li class="pricing-li"><i class="fas fa-check text-blue-500/50"></i> XML & XSLT</li>
+                                            <li class="pricing-li"><i class="fas fa-check text-blue-500/50"></i> OneShield
+                                                Integration</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div
+                            class="bg-white/[0.08] border-y border-x-0 md:border-x border-emerald-500/30 md:scale-105 z-10 md:rounded-[40px] p-10 relative shadow-2xl flex flex-col group overflow-hidden">
+                            <div class="skills-floating-bg">
+                                <i class="fab fa-aws"></i>
+                                <i class="fas fa-brain"></i>
+                                <i class="fas fa-microchip"></i>
+                            </div>
+            
+                            <div
+                                class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-black text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">
+                                Main Focus
+                            </div>
+            
+                            <div class="relative z-10">
+                                <div class="mb-8 text-center">
+                                    <span class="text-emerald-400 text-xs font-bold uppercase tracking-[0.2em]">Solution
+                                        Architect</span>
+                                    <h3 class="text-4xl font-bold mt-2">Cloud & AI</h3>
+                                </div>
+            
+                                <div class="space-y-8">
+                                    <div>
+                                        <h4 class="text-emerald-400 text-xs font-black text-center uppercase mb-4 tracking-widest">
+                                            AWS Core
+                                            Services</h4>
+                                        <ul class="space-y-3">
+                                            <li class="pricing-li-lg justify-center"><i class="fas fa-bolt text-emerald-400"></i>
+                                                EC2 & S3
+                                                Buckets</li>
+                                            <li class="pricing-li-lg justify-center"><i class="fas fa-bolt text-emerald-400"></i>
+                                                Lambda &
+                                                IAM</li>
+                                            <li class="pricing-li-lg justify-center"><i class="fas fa-bolt text-emerald-400"></i>
+                                                VPC & RDS
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-emerald-400 text-xs font-black text-center uppercase mb-4 tracking-widest">
+                                            Advanced
+                                            Tech</h4>
+                                        <ul class="space-y-3">
+                                            <li class="pricing-li-lg justify-center"><i class="fas fa-bolt text-emerald-400"></i>
+                                                GenAI /
+                                                RAG Pipelines</li>
+                                            <li class="pricing-li-lg justify-center"><i class="fas fa-bolt text-emerald-400"></i>
+                                                VectorDB
+                                                (Chroma)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div
+                            class="bg-white/5 border border-white/10 rounded-b-[40px] md:rounded-r-[40px] md:rounded-bl-none p-10 hover:bg-purple-500/[0.05] transition-all flex flex-col relative overflow-hidden group">
+                            <div class="skills-floating-bg">
+                                <i class="fab fa-docker"></i>
+                                <i class="fab fa-jenkins"></i>
+                                <i class="fas fa-infinity"></i>
+                            </div>
+            
+                            <div class="relative z-10 text-right">
+                                <div class="mb-8">
+                                    <span class="text-purple-400 text-xs font-bold uppercase tracking-[0.2em]">Infrastructure</span>
+                                    <h3 class="text-3xl font-bold mt-2">DevOps</h3>
+                                </div>
+            
+                                <div class="space-y-8">
+                                    <div>
+                                        <h4 class="text-purple-400 text-xs font-black uppercase mb-4 tracking-widest">Automation
+                                        </h4>
+                                        <ul class="space-y-3">
+                                            <li class="pricing-li flex-row-reverse"><i class="fas fa-cog text-purple-500/50"></i>
+                                                Jenkins
+                                                Pipelines</li>
+                                            <li class="pricing-li flex-row-reverse"><i class="fas fa-cog text-purple-500/50"></i>
+                                                GitHub
+                                                Actions</li>
+                                            <li class="pricing-li flex-row-reverse"><i class="fas fa-cog text-purple-500/50"></i>
+                                                Ansible /
+                                                CI/CD</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-purple-400 text-xs font-black uppercase mb-4 tracking-widest">Containers
+                                        </h4>
+                                        <ul class="space-y-3">
+                                            <li class="pricing-li flex-row-reverse"><i class="fas fa-cog text-purple-500/50"></i>
+                                                Docker &
+                                                Compose</li>
+                                            <li class="pricing-li flex-row-reverse"><i class="fas fa-cog text-purple-500/50"></i>
+                                                Kubernetes
+                                                (K8s)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
                     </div>
                 </div>
+                <style>
+                    /* Animated Background Bubbles */
+                    .skills-floating-bg {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        pointer-events: none;
+                        z-index: 0;
+                    }
+            
+                    .skills-floating-bg i {
+                        position: absolute;
+                        font-size: 5rem;
+                        color: white;
+                        opacity: 0.02;
+                        /* Very subtle background */
+                        transition: all 0.6s ease;
+                        animation: floatBubble 12s infinite ease-in-out;
+                    }
+            
+                    /* Make bubbles glow on card hover */
+                    .group:hover .skills-floating-bg i {
+                        opacity: 0.08;
+                        transform: scale(1.2);
+                    }
+            
+                    .skills-floating-bg i:nth-child(1) {
+                        top: 10%;
+                        left: 10%;
+                        animation-delay: 0s;
+                    }
+            
+                    .skills-floating-bg i:nth-child(2) {
+                        top: 50%;
+                        left: 60%;
+                        animation-delay: -4s;
+                    }
+            
+                    .skills-floating-bg i:nth-child(3) {
+                        top: 80%;
+                        left: 20%;
+                        animation-delay: -8s;
+                    }
+            
+                    @keyframes floatBubble {
+            
+                        0%,
+                        100% {
+                            transform: translateY(0) rotate(0deg);
+                        }
+            
+                        50% {
+                            transform: translateY(-30px) rotate(10deg);
+                        }
+                    }
+            
+                    /* Pricing List Styles */
+                    .pricing-li {
+                        @apply flex items-center gap-3 text-sm text-white/50;
+                    }
+            
+                    .pricing-li-lg {
+                        @apply flex items-center gap-3 text-base text-white/80 font-medium;
+                    }
+            
+                    .group:hover .pricing-li {
+                        @apply text-white/90;
+                    }
+            
+                    /* Featured card scaling */
+                    @media (min-width: 768px) {
+                        .md\:scale-105:hover {
+                            transform: scale(1.08);
+                        }
+                    }
+                </style>
             </div>
+        </section>
 
-            <!-- Journey Section -->
+        <section id="services" class="px-6 reveal">
+             <!-- Journey Section -->
             <div class="py-20 relative">
                 <h2 class="text-center text-5xl font-heading font-bold mb-32 uppercase tracking-tighter">THE <span
                         class="text-gradient">JOURNEY</span></h2>
-
+            
                 <div class="max-w-4xl mx-auto pl-12 relative">
                     <div class="timeline-axis"></div>
-
+            
                     <!-- Card 3: Job -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px; background: #f59e0b;"></div>
@@ -471,7 +842,7 @@ body.light-theme .accent-text {
                             class="absolute -left-[140px] top-4 text-[10px] font-bold text-amber-400 uppercase tracking-widest text-right">
                             Ongoing
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face border-amber-500/20">
@@ -503,7 +874,7 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
-
+            
                     <!-- Card 3: Job -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px; background: #8b5cf6;"></div>
@@ -511,7 +882,7 @@ body.light-theme .accent-text {
                             class="absolute -left-[140px] top-4 text-[10px] font-bold text-purple-400 uppercase tracking-widest text-right">
                             Ongoing
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face border-purple-500/20">
@@ -543,7 +914,7 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
-
+            
                     <!-- Card 3: Job -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px; background: #10b981;"></div>
@@ -551,7 +922,7 @@ body.light-theme .accent-text {
                             class="absolute -left-[140px] top-4 text-[10px] font-bold text-emerald-400 uppercase tracking-widest text-right">
                             Ongoing
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face learning-active">
@@ -584,8 +955,8 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
-
-
+            
+            
                     <!-- Card 3: Job -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px;"></div>
@@ -593,7 +964,7 @@ body.light-theme .accent-text {
                             class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest text-right">
                             2022 - 2024
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face border-blue-500/20">
@@ -607,22 +978,22 @@ body.light-theme .accent-text {
                                         </div>
                                         <i class="fas fa-briefcase text-2xl opacity-30 text-blue-400"></i>
                                     </div>
-
+            
                                     <div class="bar-bg bg-blue-500/10">
                                         <div class="bar-fill bg-blue-500" data-width="100%"></div>
                                     </div>
-
+            
                                     <p class="mt-4 text-xs opacity-50 italic">
                                         Promoted from Associate Analyst to Consultant in the P&C Insurance domain.
                                     </p>
                                 </div>
-
+            
                                 <div class="card-face card-back flex flex-col justify-between border-blue-500/20">
                                     <div class="flex justify-between">
                                         <span class="tag bg-blue-500/10 text-blue-400">P&C Insurance</span>
                                         <span class="tag bg-white/5 text-white/50">2 yrs 10 mos</span>
                                     </div>
-
+            
                                     <div class="space-y-2">
                                         <p class="text-[10px] leading-relaxed opacity-80">
                                             <strong>Duck Creek & OneShield Expert:</strong> Developed scalable policy
@@ -634,10 +1005,9 @@ body.light-theme .accent-text {
                                             SQL, Postman.
                                         </p>
                                     </div>
-
+            
                                     <div class="flex justify-between items-center border-t border-white/5 pt-2">
-                                        <span
-                                            class="text-[9px] font-bold text-blue-400 tracking-widest uppercase">Bhubaneswar,
+                                        <span class="text-[9px] font-bold text-blue-400 tracking-widest uppercase">Bhubaneswar,
                                             India</span>
                                         <span class="text-[9px] opacity-40 uppercase">Full-Time</span>
                                     </div>
@@ -645,15 +1015,14 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
-
+            
                     <!-- Card 3: IT Training -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px;"></div>
-                        <div
-                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                        <div class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
                             Sep 2020
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face border-amber-500/20">
@@ -665,22 +1034,22 @@ body.light-theme .accent-text {
                                         </div>
                                         <i class="fas fa-certificate text-2xl opacity-30 text-amber-400"></i>
                                     </div>
-
+            
                                     <div class="bar-bg bg-amber-500/10">
                                         <div class="bar-fill bg-amber-400" data-width="100%"></div>
                                     </div>
-
+            
                                     <p class="mt-4 text-xs opacity-50">
                                         Full-stack PHP training completed during the 2021 pandemic.
                                     </p>
                                 </div>
-
+            
                                 <div class="card-face card-back flex flex-col justify-between border-amber-500/20">
                                     <div class="flex justify-between">
                                         <span class="tag bg-amber-500/10 text-amber-400">Professional Training</span>
                                         <span class="tag bg-white/5 text-white/50">6 Months</span>
                                     </div>
-
+            
                                     <div class="space-y-2">
                                         <p class="text-[11px] leading-relaxed opacity-70">
                                             <strong>Tech Stack:</strong> Core PHP, PhpMyAdmin, and MySQLi Database
@@ -690,10 +1059,9 @@ body.light-theme .accent-text {
                                             Built the Live E-commerce project mentioned in the projects section.
                                         </p>
                                     </div>
-
+            
                                     <div class="flex justify-between items-center">
-                                        <span
-                                            class="text-[9px] font-bold text-amber-400 tracking-widest uppercase">Issued
+                                        <span class="text-[9px] font-bold text-amber-400 tracking-widest uppercase">Issued
                                             May 2021</span>
                                         <i class="fas fa-check-circle text-amber-400 text-xs"></i>
                                     </div>
@@ -701,15 +1069,14 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
-
+            
                     <!-- Card 2: Education -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px;"></div>
-                        <div
-                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                        <div class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
                             2015 - 2019
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face">
@@ -723,22 +1090,22 @@ body.light-theme .accent-text {
                                         </div>
                                         <i class="fas fa-university text-2xl opacity-20"></i>
                                     </div>
-
+            
                                     <div class="bar-bg">
                                         <div class="bar-fill" data-width="100%"></div>
                                     </div>
-
+            
                                     <p class="mt-4 text-sm opacity-50">
                                         Institute : Modern Engineering & Management Studies (MEMS), Balasore.
                                     </p>
                                 </div>
-
+            
                                 <div class="card-face card-back flex flex-col justify-between">
                                     <div class="flex justify-between">
                                         <span class="tag tag-edu">Engineering</span>
                                         <span class="tag bg-blue-500/10 text-blue-400">Foundational</span>
                                     </div>
-
+            
                                     <div class="space-y-2">
                                         <p class="text-[11px] leading-relaxed opacity-70">
                                             <strong>Focus:</strong> Algorithms, Database Systems, & Software Engineering
@@ -748,7 +1115,7 @@ body.light-theme .accent-text {
                                             Active in tech fests, coding events, and academic projects.
                                         </p>
                                     </div>
-
+            
                                     <a href="#"
                                         class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase hover:underline">
                                         Degree Credentials
@@ -757,15 +1124,14 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
-
+            
                     <!-- Card 1: Education -->
                     <div class="mb-12 relative journey-item">
                         <div class="timeline-node" style="top: 20px;"></div>
-                        <div
-                            class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                        <div class="absolute -left-[140px] top-4 text-[10px] font-bold opacity-40 uppercase tracking-widest">
                             2003 - 2015
                         </div>
-
+            
                         <div class="flip-card journey-card ml-8" onclick="this.classList.toggle('flipped')">
                             <div class="card-inner">
                                 <div class="card-face">
@@ -777,22 +1143,22 @@ body.light-theme .accent-text {
                                         </div>
                                         <i class="fas fa-school text-2xl opacity-20"></i>
                                     </div>
-
+            
                                     <div class="bar-bg">
                                         <div class="bar-fill" data-width="100%"></div>
                                     </div>
-
+            
                                     <p class="mt-4 text-xs opacity-50">
                                         Regions : Mathura Cantt | Jammu | Guwahati | Nasirabad | Bangalore | Jabalpur
                                     </p>
                                 </div>
-
+            
                                 <div class="card-face card-back flex flex-col justify-between">
                                     <div class="flex justify-between">
                                         <span class="tag tag-edu">Schooling</span>
                                         <span class="tag bg-cyan-500/10 text-cyan-400">Science Stream</span>
                                     </div>
-
+            
                                     <div class="space-y-2">
                                         <p class="text-[11px] leading-relaxed opacity-70">
                                             <strong>Curriculum:</strong> Physics, Chemistry, Mathematics, and C++
@@ -802,7 +1168,7 @@ body.light-theme .accent-text {
                                             Strong academic and co-curricular performance in a disciplined environment.
                                         </p>
                                     </div>
-
+            
                                     <div class="text-[9px] font-bold text-cyan-400 tracking-widest uppercase">
                                         Central Board of Secondary Education
                                     </div>
@@ -810,6 +1176,8 @@ body.light-theme .accent-text {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
         </section>
 
         <!-- Projects Section -->
@@ -817,10 +1185,20 @@ body.light-theme .accent-text {
             <div class="max-w-6xl mx-auto">
                 <h2 class="text-6xl font-heading font-black mb-24 text-center uppercase tracking-tighter">My <span
                         class="text-gradient">WORK</span></h2>
+                <div class="flex flex-wrap justify-center gap-4 mb-16 px-4">
+                    <button onclick="filterProjects('all')"
+                        class="filter-btn active-filter px-6 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest transition-all">All</button>
+                    <button onclick="filterProjects('development')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest transition-all">Development</button>
+                    <button onclick="filterProjects('cloud-devOps')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest transition-all">Cloud & DevOps</button>
+                    <button onclick="filterProjects('data')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest transition-all">Data & AI</button>
+                </div>
                 <div class="grid md:grid-cols-2 gap-10">
 
                     <!-- Project 1 -->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group cloud-devOps" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-indigo-500/50 transition-all duration-500 shadow-lg group-hover:shadow-indigo-500/10">
@@ -892,7 +1270,7 @@ body.light-theme .accent-text {
                     </div>
 
                     <!-- Project 2-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group data" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-emerald-500/50 transition-all duration-500 shadow-lg group-hover:shadow-emerald-500/10">
@@ -962,7 +1340,7 @@ body.light-theme .accent-text {
                     </div>
 
                     <!-- Project 3-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-blue-500/50 transition-all duration-500 shadow-lg group-hover:shadow-blue-500/10">
@@ -1029,7 +1407,7 @@ body.light-theme .accent-text {
                     </div>
 
                     <!-- Project 4-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-violet-500/50 transition-all duration-500 shadow-lg group-hover:shadow-violet-500/10">
@@ -1099,7 +1477,7 @@ body.light-theme .accent-text {
 
 
                     <!-- Project 5-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-amber-500/50 transition-all duration-500 shadow-lg group-hover:shadow-amber-500/10">
@@ -1173,7 +1551,7 @@ body.light-theme .accent-text {
 
 
                     <!-- Project 6-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-rose-500/50 transition-all duration-500 shadow-lg group-hover:shadow-rose-500/10">
@@ -1244,7 +1622,7 @@ body.light-theme .accent-text {
                     </div>
 
                     <!-- Project 7-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-cyan-500/50 transition-all duration-500 shadow-lg group-hover:shadow-cyan-500/10">
@@ -1313,7 +1691,7 @@ body.light-theme .accent-text {
 
 
                     <!-- Project 8-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-sky-400/50 transition-all duration-500 shadow-lg group-hover:shadow-sky-500/10">
@@ -1381,7 +1759,7 @@ body.light-theme .accent-text {
 
 
                     <!-- Project 9-->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-slate-400/50 transition-all duration-500 shadow-lg group-hover:shadow-slate-500/10">
@@ -1450,7 +1828,7 @@ body.light-theme .accent-text {
 
 
                     <!-- Project 10 -->
-                    <div class="flip-card project-card group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card project-card group development" onclick="this.classList.toggle('flipped')">
                         <div class="card-inner">
                             <div
                                 class="card-face border border-white/5 group-hover:border-indigo-500/50 transition-all duration-500 shadow-lg group-hover:shadow-indigo-500/10">
@@ -1884,6 +2262,39 @@ body.light-theme .accent-text {
                 }
             });
         });
+
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // 1. Update Button UI (Active State)
+            buttons.forEach(btn => {
+                btn.classList.remove('active-filter', 'border-primary', 'text-primary');
+                if (btn.getAttribute('onclick').includes(category)) {
+                    btn.classList.add('active-filter', 'border-primary', 'text-primary');
+                }
+            });
+
+            // 2. Filter Cards with a Fade Effect
+            cards.forEach(card => {
+                // First, add a fade-out effect
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+
+                setTimeout(() => {
+                    if (category === 'all' || card.classList.contains(category)) {
+                        card.style.display = 'block';
+                        // Small delay to trigger fade-in
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 50);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }, 300); // Matches the transition duration
+            });
+        }
 
         window.onload = initScrollEffects;
     </script>
