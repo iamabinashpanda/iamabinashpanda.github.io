@@ -18,7 +18,30 @@
             --text: #ffffff;
             --glass: rgba(255, 255, 255, 0.03);
         }
+        /* Light Theme Specific Overrides for About Me */
+body.light-theme .about-container {
+    background: rgba(0, 0, 0, 0.04); /* Subtle dark glass for light mode */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
 
+body.light-theme .about-text {
+    color: #1e293b; /* Ensure main text is dark slate */
+}
+
+/* Fix for the highlighted/white text in your screenshots */
+body.light-theme .about-text strong, 
+body.light-theme .about-text b,
+body.light-theme .highlight-text {
+    color: #0f172a; /* Darker navy for emphasized text */
+    font-weight: 800;
+}
+
+/* Ensure the primary/secondary gradients still pop */
+body.light-theme .accent-text {
+    background: linear-gradient(135deg, #0891b2, #7e22ce); /* Darker version of primary/secondary */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
         body.light-theme {
             --bg: #f8fafc;
             --text: #0f172a;
