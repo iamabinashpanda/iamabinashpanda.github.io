@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Explorer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .city-dot {
+            cursor: pointer;
+            transition: stroke-width 0.2s;
+        }
+        .city-label {
+            pointer-events: none;
+            font-size: 10px;
+            fill: #f8fafc;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            font-weight: 500;
+        }
+        .custom-tooltip {
+            position: fixed;
+            pointer-events: none;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(51, 65, 85, 1);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+        .sidebar {
+            height: 100vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #334155 #0f172a;
+        }
+        .city-card {
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+        .city-card:hover {
+            background-color: #1e293b;
+            border-left-color: #38bdf8;
+        }
+        .highlighted {
+            background-color: #1e293b;
+            border-left-color: #38bdf8 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="sidebar w-80 bg-slate-900 text-slate-100 border-r border-slate-800 flex flex-col">
+            <div class="p-6 border-b border-slate-800">
+                <h1 class="text-xl font-bold text-sky-400">Visited Cities</h1>
+                <p class="text-xs text-slate-400 mt-1">Visualizing my visited locations</p>
+            </div>
+            <div id="city-list" class="flex-grow">
+                <!-- City cards will be injected here -->
+            </div>
+        </div>
+
+        <!-- Main Map Area -->
+        <div class="flex-grow relative bg-slate-950 overflow-hidden" id="map-container">
+            <svg id="viz-svg" class="w-full h-full"></svg>
+            
+            <!-- Controls Overlay -->
+            <div class="absolute bottom-6 right-6 flex flex-col gap-2">
+                <button id="zoom-in" class="bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-full shadow-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <button id="zoom-out" class="bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-full shadow-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <button id="reset-zoom" class="bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-full shadow-lg transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tooltip" class="custom-tooltip"></div>
+
+    <script>
+        // Updated City Data based on your explorations
+        const cities = [
+                { name: "Jammu", country: "India", pop: 502197, lat: 32.7266, lon: 74.8570, color: "#38bdf8" },
+                { name: "Srinagar", country: "India", pop: 1180570, lat: 34.0837, lon: 74.7973, color: "#38bdf8" },
+                { name: "Ambala", country: "India", pop: 200000, lat: 30.3782, lon: 76.7767, color: "#fb923c" },
+                { name: "New Delhi", country: "India", pop: 32000000, lat: 28.6139, lon: 77.2090, color: "#f87171" },
+                { name: "Gurgaon", country: "India", pop: 876969, lat: 28.4595, lon: 77.0266, color: "#f87171" },
+                { name: "Mathura", country: "India", pop: 441894, lat: 27.4924, lon: 77.6737, color: "#fbbf24" },
+                { name: "Vrindavan", country: "India", pop: 63005, lat: 27.5650, lon: 77.6593, color: "#fbbf24" },
+                { name: "Agra", country: "India", pop: 1585704, lat: 27.1767, lon: 78.0081, color: "#fbbf24" },
+                { name: "Ajmer", country: "India", pop: 542321, lat: 26.4499, lon: 74.6399, color: "#fb923c" },
+                { name: "Jabalpur", country: "India", pop: 1081677, lat: 23.1815, lon: 79.9864, color: "#fb923c" },
+                { name: "Bhopal", country: "India", pop: 1798218, lat: 23.2599, lon: 77.4126, color: "#fb923c" },
+                { name: "Guwahati", country: "India", pop: 957352, lat: 26.1445, lon: 91.7362, color: "#4ade80" },
+                { name: "Changsari", country: "India", pop: 15000, lat: 26.2917, lon: 91.6833, color: "#4ade80" },
+                { name: "Shillong", country: "India", pop: 143229, lat: 25.5788, lon: 91.8831, color: "#4ade80" },
+                { name: "Cherrapunji", country: "India", pop: 11722, lat: 25.2702, lon: 91.7323, color: "#4ade80" },
+                { name: "Namchi", country: "India", pop: 12194, lat: 27.1675, lon: 88.3582, color: "#4ade80" },
+                { name: "Kalimpong", country: "India", pop: 49403, lat: 27.0594, lon: 88.4662, color: "#4ade80" },
+                { name: "Bangalore", country: "India", pop: 13193000, lat: 12.9716, lon: 77.5946, color: "#a78bfa" },
+                { name: "Hyderabad", country: "India", pop: 10534000, lat: 17.3850, lon: 78.4867, color: "#a78bfa" },
+                { name: "Mysore", country: "India", pop: 920550, lat: 12.2958, lon: 76.6394, color: "#a78bfa" },
+                { name: "Kolkata", country: "India", pop: 14974000, lat: 22.5726, lon: 88.3639, color: "#2dd4bf" },
+                { name: "Bhubaneshwar", country: "India", pop: 837737, lat: 20.2961, lon: 85.8245, color: "#2dd4bf" },
+                { name: "Cuttack", country: "India", pop: 606007, lat: 20.4625, lon: 85.8830, color: "#2dd4bf" },
+                { name: "Puri", country: "India", pop: 200591, lat: 19.8135, lon: 85.8312, color: "#2dd4bf" },
+                { name: "Mayurbhanj", country: "India", pop: 2519738, lat: 21.9272, lon: 86.7513, color: "#2dd4bf" },
+                { name: "Baleshwar", country: "India", pop: 144839, lat: 21.4862, lon: 86.9246, color: "#2dd4bf" }
+            ];
+
+        const svg = d3.select("#viz-svg");
+        const tooltip = d3.select("#tooltip");
+        const cityList = d3.select("#city-list");
+        
+        let width, height;
+        const projection = d3.geoMercator();
+        const pathGenerator = d3.geoPath().projection(projection);
+        const g = svg.append("g");
+
+        // Zoom setup
+        const zoom = d3.zoom()
+            .scaleExtent([1, 40])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+                // Adjust sizes relative to zoom level
+                const k = event.transform.k;
+                g.selectAll(".city-dot")
+                    .attr("r", d => (Math.log10(d.pop) * 1.5) / Math.pow(k, 0.4));
+                g.selectAll(".city-label")
+                    .style("font-size", `${Math.max(4, 10 / k)}px`);
+                g.selectAll(".country")
+                    .attr("stroke-width", 0.5 / k);
+            });
+
+        svg.call(zoom);
+
+        function updateDimensions() {
+            const container = document.getElementById('map-container');
+            width = container.clientWidth;
+            height = container.clientHeight;
+            svg.attr("viewBox", `0 0 ${width} ${height}`);
+            
+            // Focus on India
+            projection
+                .center([82, 22]) 
+                .scale(width * 1.2)
+                .translate([width / 2, height / 2]);
+                
+            render();
+        }
+
+        async function render() {
+            g.selectAll("*").remove();
+
+            // Background grid
+            const graticule = d3.geoGraticule();
+            g.append("path")
+                .datum(graticule)
+                .attr("class", "grid-line")
+                .attr("d", pathGenerator)
+                .attr("fill", "none")
+                .attr("stroke", "#1e293b")
+                .attr("stroke-width", 0.5);
+
+            // World Map
+            try {
+                const worldData = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
+                const countries = topojson.feature(worldData, worldData.objects.countries);
+                
+                g.selectAll(".country")
+                    .data(countries.features)
+                    .enter()
+                    .append("path")
+                    .attr("class", "country")
+                    .attr("d", pathGenerator)
+                    .attr("fill", (d) => d.properties.name === "India" ? "#1e293b" : "#0f172a")
+                    .attr("stroke", "#334155")
+                    .attr("stroke-width", 0.5);
+            } catch (e) {
+                console.warn("Map data failed to load");
+            }
+
+            // Render Cities
+            const cityDots = g.selectAll(".city-dot")
+                .data(cities)
+                .enter()
+                .append("circle")
+                .attr("class", "city-dot")
+                .attr("id", d => `city-${d.name.replace(/\s+/g, '-')}`)
+                .attr("cx", d => projection([d.lon, d.lat])[0])
+                .attr("cy", d => projection([d.lon, d.lat])[1])
+                .attr("r", d => Math.log10(d.pop) * 1.5)
+                .attr("fill", d => d.color)
+                .attr("fill-opacity", 0.8)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 0.5)
+                .on("mouseenter", (event, d) => {
+                    showTooltip(event, d);
+                    highlightCity(d.name, true);
+                })
+                .on("mouseleave", (event, d) => {
+                    hideTooltip();
+                    highlightCity(d.name, false);
+                })
+                .on("click", (event, d) => zoomToCity(d));
+
+            // Add labels
+            g.selectAll(".city-label")
+                .data(cities)
+                .enter()
+                .append("text")
+                .attr("class", "city-label")
+                .attr("x", d => projection([d.lon, d.lat])[0])
+                .attr("y", d => projection([d.lon, d.lat])[1] - 5)
+                .attr("text-anchor", "middle")
+                .text(d => d.name);
+
+            // Sidebar
+            cityList.selectAll("*").remove();
+            [...cities].sort((a, b) => a.name.localeCompare(b.name)).forEach(city => {
+                const card = cityList.append("div")
+                    .attr("class", "city-card p-4 border-b border-slate-800 cursor-pointer")
+                    .attr("id", `card-${city.name.replace(/\s+/g, '-')}`)
+                    .on("mouseenter", () => highlightCity(city.name, true))
+                    .on("mouseleave", () => highlightCity(city.name, false))
+                    .on("click", () => zoomToCity(city));
+
+                card.append("div")
+                    .html(`
+                        <div class="flex justify-between items-center">
+                            <div class="font-semibold text-slate-200">${city.name}</div>
+                            <div class="text-[10px] uppercase tracking-wider text-slate-500">${city.country}</div>
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-1">
+                            Lat: ${city.lat.toFixed(2)} / Lon: ${city.lon.toFixed(2)}
+                        </div>
+                    `);
+            });
+        }
+
+        function showTooltip(event, d) {
+            tooltip
+                .style("display", "block")
+                .style("left", (event.clientX + 15) + "px")
+                .style("top", (event.clientY - 15) + "px")
+                .html(`
+                    <div class="text-sm">
+                        <div class="font-bold border-b border-slate-700 pb-1 mb-1 text-sky-400">${d.name}</div>
+                        <div class="text-xs text-slate-300">Visited Location</div>
+                        <div class="mt-1 text-[10px] text-slate-500 font-mono">
+                            ${d.lat.toFixed(4)}, ${d.lon.toFixed(4)}
+                        </div>
+                    </div>
+                `);
+        }
+
+        function hideTooltip() {
+            tooltip.style("display", "none");
+        }
+
+        function highlightCity(cityName, isHighlight) {
+            const idSafe = cityName.replace(/\s+/g, '-');
+            const dot = d3.select(`#city-${idSafe}`);
+            const card = d3.select(`#card-${idSafe}`);
+
+            if (isHighlight) {
+                dot.interrupt()
+                   .transition()
+                   .duration(200)
+                   .attr("stroke-width", 2)
+                   .attr("fill-opacity", 1)
+                   .attr("r", d => (Math.log10(d.pop) * 2.5) / Math.pow(d3.zoomTransform(svg.node()).k, 0.4));
+                
+                card.classed("highlighted", true);
+                const cardNode = card.node();
+                if (cardNode) cardNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                dot.interrupt()
+                   .transition()
+                   .duration(200)
+                   .attr("stroke-width", 0.5)
+                   .attr("fill-opacity", 0.8)
+                   .attr("r", d => (Math.log10(d.pop) * 1.5) / Math.pow(d3.zoomTransform(svg.node()).k, 0.4));
+                
+                card.classed("highlighted", false);
+            }
+        }
+
+        function zoomToCity(city) {
+            const coords = projection([city.lon, city.lat]);
+            const transform = d3.zoomIdentity
+                .translate(width / 2, height / 2)
+                .scale(12)
+                .translate(-coords[0], -coords[1]);
+
+            svg.transition()
+                .duration(1000)
+                .call(zoom.transform, transform);
+        }
+
+        document.getElementById("zoom-in").onclick = () => svg.transition().call(zoom.scaleBy, 2);
+        document.getElementById("zoom-out").onclick = () => svg.transition().call(zoom.scaleBy, 0.5);
+        document.getElementById("reset-zoom").onclick = () => {
+            svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity);
+        };
+
+        window.addEventListener('resize', updateDimensions);
+
+        window.onload = () => {
+            if (typeof topojson === 'undefined') {
+                const script = document.createElement('script');
+                script.src = "https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js";
+                script.onload = updateDimensions;
+                document.head.appendChild(script);
+            } else {
+                updateDimensions();
+            }
+        };
+    </script>
+</body>
+</html>
